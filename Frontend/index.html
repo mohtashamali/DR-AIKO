@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DR AI — Hybrid Doctor</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     FULL-SCREEN CALL OVERLAY
+     Hidden by default, shown when call starts
+     ══════════════════════════════════════════ -->
+<div class="call-overlay" id="callOverlay">
+
+  <!-- Top bar -->
+  <div class="call-topbar">
+    <div class="call-brand">⚕ DR AI</div>
+    <div class="call-timer" id="callTimer">00:00</div>
+    <div class="call-status-pill" id="callStatusPill">
+      <span class="call-status-dot" id="callStatusDot"></span>
+      <span id="callStatusText">Connecting…</span>
+    </div>
+  </div>
+
+  <!-- Main call area -->
+  <div class="call-main">
+
+    <!-- Doctor avatar (large, centered) -->
+    <div class="call-avatar-wrap" id="callAvatarWrap">
+      <div class="call-pulse-ring r1"></div>
+      <div class="call-pulse-ring r2"></div>
+      <div class="call-pulse-ring r3"></div>
+
+      <svg id="callDoctor" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
+        <g class="body-group">
+          <rect x="28" y="108" width="104" height="66" rx="14" fill="#e8f4fd"/>
+          <path d="M80 108 L60 132 L80 127 L100 132 Z" fill="#c8dff0"/>
+          <path d="M62 122 Q54 140 62 150 Q69 157 77 150" stroke="#1e3a5f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <circle cx="77" cy="151" r="5" fill="#38bdf8" stroke="#1e3a5f" stroke-width="1.5"/>
+          <path d="M70 108 L80 120 L90 108" fill="#1a2f4e"/>
+          <rect x="96" y="120" width="18" height="20" rx="4" fill="white" stroke="#c8dff0" stroke-width="1"/>
+          <line x1="100" y1="124" x2="110" y2="124" stroke="#38bdf8" stroke-width="1.5"/>
+          <line x1="100" y1="128" x2="110" y2="128" stroke="#38bdf8" stroke-width="1.5"/>
+          <rect x="68" y="96" width="24" height="18" rx="7" fill="#f5c5a3"/>
+          <ellipse cx="80" cy="76" rx="38" ry="40" fill="#f5c5a3"/>
+          <ellipse cx="80" cy="40" rx="38" ry="18" fill="#2c1a0e"/>
+          <rect x="42" y="38" width="76" height="16" fill="#2c1a0e" rx="2"/>
+          <ellipse cx="44" cy="62" rx="8" ry="14" fill="#2c1a0e"/>
+          <ellipse cx="116" cy="62" rx="8" ry="14" fill="#2c1a0e"/>
+          <ellipse cx="42" cy="78" rx="6" ry="9" fill="#f5c5a3"/>
+          <ellipse cx="118" cy="78" rx="6" ry="9" fill="#f5c5a3"/>
+          <rect x="52" y="68" width="22" height="16" rx="5" fill="none" stroke="#1e3a5f" stroke-width="2.5"/>
+          <rect x="86" y="68" width="22" height="16" rx="5" fill="none" stroke="#1e3a5f" stroke-width="2.5"/>
+          <line x1="74" y1="76" x2="86" y2="76" stroke="#1e3a5f" stroke-width="2"/>
+          <rect x="53" y="69" width="20" height="14" rx="4" fill="#38bdf8" opacity="0.13"/>
+          <rect x="87" y="69" width="20" height="14" rx="4" fill="#38bdf8" opacity="0.13"/>
+          <line x1="42" y1="74" x2="52" y2="74" stroke="#1e3a5f" stroke-width="2"/>
+          <line x1="108" y1="74" x2="118" y2="74" stroke="#1e3a5f" stroke-width="2"/>
+          <path d="M54 65 Q63 62 73 65" stroke="#2c1a0e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <path d="M87 65 Q97 62 107 65" stroke="#2c1a0e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+          <ellipse cx="63" cy="76" rx="6" ry="6" fill="white"/>
+          <ellipse cx="97" cy="76" rx="6" ry="6" fill="white"/>
+          <circle cx="64" cy="77" r="3.5" fill="#1a3050"/>
+          <circle cx="98" cy="77" r="3.5" fill="#1a3050"/>
+          <circle cx="65.5" cy="75.5" r="1.2" fill="white"/>
+          <circle cx="99.5" cy="75.5" r="1.2" fill="white"/>
+          <!-- Blink -->
+          <ellipse cx="63" cy="76" rx="6" ry="0" fill="#f5c5a3">
+            <animate attributeName="ry" values="0;0;0;0;0;0;6;0;0;0;0;0;0;0;0;6;0" dur="5s" repeatCount="indefinite"/>
+          </ellipse>
+          <ellipse cx="97" cy="76" rx="6" ry="0" fill="#f5c5a3">
+            <animate attributeName="ry" values="0;0;0;0;0;0;6;0;0;0;0;0;0;0;0;6;0" dur="5s" repeatCount="indefinite"/>
+          </ellipse>
+          <path d="M78 80 Q80 86 82 80" stroke="#d4956a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+          <ellipse cx="76" cy="87" rx="3.5" ry="2" fill="#d4956a" opacity="0.4"/>
+          <ellipse cx="84" cy="87" rx="3.5" ry="2" fill="#d4956a" opacity="0.4"/>
+          <ellipse cx="52" cy="87" rx="9" ry="5" fill="#f4a29a" opacity="0.28"/>
+          <ellipse cx="108" cy="87" rx="9" ry="5" fill="#f4a29a" opacity="0.28"/>
+          <path id="call-mouth-rest" class="call-mouth active" d="M70 96 Q80 99 90 96" stroke="#c07850" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <g id="call-mouth-mid" class="call-mouth">
+            <path d="M70 95 Q80 101 90 95" stroke="#c07850" stroke-width="2" fill="#c07850" stroke-linecap="round"/>
+            <ellipse cx="80" cy="97" rx="7" ry="3" fill="#8b3a1e"/>
+          </g>
+          <g id="call-mouth-open" class="call-mouth">
+            <path d="M68 93 Q80 101 92 93" stroke="#c07850" stroke-width="2" fill="#c07850" stroke-linecap="round"/>
+            <ellipse cx="80" cy="96" rx="10" ry="5.5" fill="#8b3a1e"/>
+            <ellipse cx="80" cy="97" rx="7" ry="3.5" fill="#3d1010"/>
+          </g>
+          <path id="call-mouth-press" class="call-mouth" d="M69 96 Q80 94 91 96 Q80 100 69 96Z" fill="#c07850" stroke="#c07850" stroke-width="1"/>
+          <path id="call-mouth-smile" class="call-mouth" d="M70 95 Q80 102 90 95" stroke="#c07850" stroke-width="2" fill="none" stroke-linecap="round"/>
+        </g>
+      </svg>
+    </div>
+
+    <div class="call-doctor-name">Dr. AI</div>
+    <div class="call-doctor-title">General Practitioner · AI</div>
+
+    <div class="call-transcript" id="callTranscript">
+      <span id="callTranscriptText">Listening…</span>
+    </div>
+
+    <div class="call-mic-wrap" id="callMicWrap">
+      <div class="call-mic-label" id="callMicLabel">Your mic</div>
+      <div class="call-mic-bars" id="callMicBars">
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom call controls -->
+  <div class="call-controls">
+    <button class="call-ctrl-btn mute-btn" id="muteBtn" onclick="toggleMute()" title="Mute">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+        <line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/>
+      </svg>
+    </button>
+
+    <button class="call-ctrl-btn end-btn" id="endCallBtn" onclick="endCall()" title="End call">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6.29 6.29l1.67-1.67a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+        <line x1="1" y1="1" x2="23" y2="23"/>
+      </svg>
+    </button>
+
+    <button class="call-ctrl-btn skip-btn" id="skipBtn" onclick="skipSpeech()" title="Skip doctor speech">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <polygon points="5 4 15 12 5 20 5 4"/><line x1="19" y1="5" x2="19" y2="19"/>
+      </svg>
+    </button>
+  </div>
+
+</div>
+<!-- END CALL OVERLAY -->
+
+
+<!-- ══════════════════════════════════════════
+     NORMAL CHAT UI (unchanged)
+     ══════════════════════════════════════════ -->
+<nav>
+  <div class="nav-brand">
+    <span class="nav-icon">⚕</span>
+    <span class="nav-title">DR AI</span>
+    <span class="nav-sub">Hybrid Medical Assistant</span>
+  </div>
+  <div class="nav-right">
+    <!-- TRAIN BUTTON -->
+    <button class="train-start-btn" id="trainStartBtn" onclick="openTrainModal()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+      </svg>
+      Train AI
+    </button>
+        <!-- CALL BUTTON -->
+    <button class="call-start-btn" id="callStartBtn" onclick="startCall()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.6 1.21h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.81a16 16 0 0 0 6.29 6.29l1.67-1.67a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+      </svg>
+      Live Call
+    </button>
+    <div class="nav-status">
+      <span class="status-dot" id="statusDot"></span>
+      <span id="statusLabel">Ready</span>
+    </div>
+  </div>
+</nav>
+
+<div class="main-layout">
+
+  <!-- LEFT: CHAT -->
+  <div class="chat-section">
+    <div class="chat-header">
+      <span>Consultation Room</span>
+      <span class="chat-badge">AI · Groq LLaMA 3 + LLaVA Vision</span>
+    </div>
+
+    <div class="chat-area" id="chat-area">
+      <div class="bot-row">
+        <div class="avatar-mini">👨‍⚕️</div>
+        <div class="bot-message">Hello! I'm Dr. AI. You can type your symptoms below, upload a medical image, or press <strong>Live Call</strong> to speak with me directly.</div>
+      </div>
+    </div>
+
+    <div class="image-preview-bar" id="imagePreviewBar">
+      <img id="imageThumb" src="" alt="preview" />
+      <div class="image-preview-info">
+        <span id="imageFileName">image.jpg</span>
+        <span class="image-preview-tag">Ready to analyze</span>
+      </div>
+      <button class="image-remove-btn" onclick="clearImage()" title="Remove image">✕</button>
+    </div>
+
+    <div class="input-part">
+      <input type="file" id="imageInput" accept="image/*" style="display:none" onchange="handleImageSelect(event)" />
+      <button class="btn-upload" id="uploadBtn" onclick="document.getElementById('imageInput').click()" title="Upload medical image">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <circle cx="8.5" cy="8.5" r="1.5"/>
+          <polyline points="21 15 16 10 5 21"/>
+        </svg>
+      </button>
+      <input type="text" id="user-msg" placeholder="Describe symptoms, or ask about the uploaded image..." autocomplete="off" />
+      <button onclick="sendmsg()" id="sendBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- RIGHT: AVATAR (sidebar) -->
+  <div class="avatar-section">
+    <div class="avatar-bg-glow"></div>
+    <div class="doctor-card" id="avatarCard">
+      <div class="pulse-ring"></div>
+      <div class="pulse-ring delay"></div>
+      <div class="avatar-wrap">
+        <svg id="doctor" viewBox="0 0 160 180" xmlns="http://www.w3.org/2000/svg">
+          <g class="body-group">
+            <rect x="28" y="108" width="104" height="66" rx="14" fill="#e8f4fd"/>
+            <path d="M80 108 L60 132 L80 127 L100 132 Z" fill="#c8dff0"/>
+            <path d="M62 122 Q54 140 62 150 Q69 157 77 150" stroke="#1e3a5f" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <circle cx="77" cy="151" r="5" fill="#38bdf8" stroke="#1e3a5f" stroke-width="1.5"/>
+            <path d="M70 108 L80 120 L90 108" fill="#1a2f4e"/>
+            <rect x="96" y="120" width="18" height="20" rx="4" fill="white" stroke="#c8dff0" stroke-width="1"/>
+            <line x1="100" y1="124" x2="110" y2="124" stroke="#38bdf8" stroke-width="1.5"/>
+            <line x1="100" y1="128" x2="110" y2="128" stroke="#38bdf8" stroke-width="1.5"/>
+            <rect x="68" y="96" width="24" height="18" rx="7" fill="#f5c5a3"/>
+            <ellipse cx="80" cy="76" rx="38" ry="40" fill="#f5c5a3"/>
+            <ellipse cx="80" cy="40" rx="38" ry="18" fill="#2c1a0e"/>
+            <rect x="42" y="38" width="76" height="16" fill="#2c1a0e" rx="2"/>
+            <ellipse cx="44" cy="62" rx="8" ry="14" fill="#2c1a0e"/>
+            <ellipse cx="116" cy="62" rx="8" ry="14" fill="#2c1a0e"/>
+            <ellipse cx="42" cy="78" rx="6" ry="9" fill="#f5c5a3"/>
+            <ellipse cx="118" cy="78" rx="6" ry="9" fill="#f5c5a3"/>
+            <rect x="52" y="68" width="22" height="16" rx="5" fill="none" stroke="#1e3a5f" stroke-width="2.5"/>
+            <rect x="86" y="68" width="22" height="16" rx="5" fill="none" stroke="#1e3a5f" stroke-width="2.5"/>
+            <line x1="74" y1="76" x2="86" y2="76" stroke="#1e3a5f" stroke-width="2"/>
+            <rect x="53" y="69" width="20" height="14" rx="4" fill="#38bdf8" opacity="0.13"/>
+            <rect x="87" y="69" width="20" height="14" rx="4" fill="#38bdf8" opacity="0.13"/>
+            <line x1="42" y1="74" x2="52" y2="74" stroke="#1e3a5f" stroke-width="2"/>
+            <line x1="108" y1="74" x2="118" y2="74" stroke="#1e3a5f" stroke-width="2"/>
+            <path d="M54 65 Q63 62 73 65" stroke="#2c1a0e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <path d="M87 65 Q97 62 107 65" stroke="#2c1a0e" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+            <ellipse cx="63" cy="76" rx="6" ry="6" fill="white"/>
+            <ellipse cx="97" cy="76" rx="6" ry="6" fill="white"/>
+            <circle cx="64" cy="77" r="3.5" fill="#1a3050"/>
+            <circle cx="98" cy="77" r="3.5" fill="#1a3050"/>
+            <circle cx="65.5" cy="75.5" r="1.2" fill="white"/>
+            <circle cx="99.5" cy="75.5" r="1.2" fill="white"/>
+            <ellipse cx="63" cy="76" rx="6" ry="0" fill="#f5c5a3">
+              <animate attributeName="ry" values="0;0;0;0;0;0;6;0;0;0;0;0;0;0;0;6;0" dur="5s" repeatCount="indefinite"/>
+            </ellipse>
+            <ellipse cx="97" cy="76" rx="6" ry="0" fill="#f5c5a3">
+              <animate attributeName="ry" values="0;0;0;0;0;0;6;0;0;0;0;0;0;0;0;6;0" dur="5s" repeatCount="indefinite"/>
+            </ellipse>
+            <path d="M78 80 Q80 86 82 80" stroke="#d4956a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+            <ellipse cx="76" cy="87" rx="3.5" ry="2" fill="#d4956a" opacity="0.4"/>
+            <ellipse cx="84" cy="87" rx="3.5" ry="2" fill="#d4956a" opacity="0.4"/>
+            <ellipse cx="52" cy="87" rx="9" ry="5" fill="#f4a29a" opacity="0.28"/>
+            <ellipse cx="108" cy="87" rx="9" ry="5" fill="#f4a29a" opacity="0.28"/>
+            <path id="mouth-rest" class="mouth-shape active" d="M70 96 Q80 99 90 96" stroke="#c07850" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <g id="mouth-mid" class="mouth-shape">
+              <path d="M70 95 Q80 101 90 95" stroke="#c07850" stroke-width="2" fill="#c07850" stroke-linecap="round"/>
+              <ellipse cx="80" cy="97" rx="7" ry="3" fill="#8b3a1e"/>
+            </g>
+            <g id="mouth-open" class="mouth-shape">
+              <path d="M68 93 Q80 101 92 93" stroke="#c07850" stroke-width="2" fill="#c07850" stroke-linecap="round"/>
+              <ellipse cx="80" cy="96" rx="10" ry="5.5" fill="#8b3a1e"/>
+              <ellipse cx="80" cy="97" rx="7" ry="3.5" fill="#3d1010"/>
+            </g>
+            <path id="mouth-press" class="mouth-shape" d="M69 96 Q80 94 91 96 Q80 100 69 96Z" fill="#c07850" stroke="#c07850" stroke-width="1"/>
+            <path id="mouth-smile" class="mouth-shape" d="M70 95 Q80 102 90 95" stroke="#c07850" stroke-width="2" fill="none" stroke-linecap="round"/>
+          </g>
+        </svg>
+      </div>
+      <div class="doctor-info">
+        <div class="doctor-name">Dr. AI</div>
+        <div class="doctor-title">General Practitioner · AI</div>
+      </div>
+      <div class="avatar-status" id="avatarStatus">
+        <span class="av-dot" id="avDot"></span>
+        <span id="avLabel">Listening</span>
+      </div>
+    </div>
+    <div class="waveform" id="waveform">
+      <span></span><span></span><span></span><span></span><span></span>
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+  </div>
+
+</div>
+
+
+<!-- ══════════════════════════════════════════
+     TRAIN MODAL
+     ══════════════════════════════════════════ -->
+<div class="modal-overlay" id="trainModal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div class="modal-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
+        </svg>
+        Train the AI Knowledge Base
+      </div>
+      <button class="modal-close" onclick="closeTrainModal()">✕</button>
+    </div>
+
+    <p class="modal-desc">Upload medical documents or paste text to expand Dr. AI's knowledge. The model will search this knowledge base before every response.</p>
+
+    <!-- Tab switcher -->
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tabFile" onclick="switchTab('file')">Upload File</button>
+      <button class="modal-tab" id="tabText" onclick="switchTab('text')">Paste Text</button>
+    </div>
+
+    <!-- FILE TAB -->
+    <div class="modal-tab-content" id="tabContentFile">
+      <div class="file-drop-zone" id="fileDropZone" onclick="document.getElementById('trainFileInput').click()">
+        <input type="file" id="trainFileInput" accept=".pdf,.txt,.md" style="display:none" onchange="handleTrainFile(event)" />
+        <div class="file-drop-icon">📄</div>
+        <div class="file-drop-label">Click to browse or drag & drop</div>
+        <div class="file-drop-sub">Supported: PDF, TXT, MD</div>
+      </div>
+      <div class="train-file-selected" id="trainFileSelected" style="display:none">
+        <span id="trainFileName">file.pdf</span>
+        <button onclick="clearTrainFile()">✕</button>
+      </div>
+      <button class="modal-submit-btn" id="trainFileBtn" onclick="submitTrainFile()">
+        Add to Knowledge Base
+      </button>
+    </div>
+
+    <!-- TEXT TAB -->
+    <div class="modal-tab-content" id="tabContentText" style="display:none">
+      <textarea id="trainTextArea" placeholder="Paste medical guidelines, notes, drug information, research summaries, or any medical content here..."></textarea>
+      <input type="text" id="trainTextSource" placeholder="Source label (optional, e.g. 'WHO Guidelines 2024')" />
+      <button class="modal-submit-btn" id="trainTextBtn" onclick="submitTrainText()">
+        Add to Knowledge Base
+      </button>
+    </div>
+
+    <!-- Status message -->
+    <div class="train-status" id="trainStatus"></div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
