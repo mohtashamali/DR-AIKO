@@ -1,8 +1,3 @@
-# ================================
-# Dr AIKO — COMPLETE PROJECT PACKAGE
-# ================================
-
-
 # Dr Aiko — Retrieval-Augmented Medical Assistant
 
 Dr Aiko is an AI-powered medical assistant built using Retrieval-Augmented Generation (RAG) and Large Language Models (LLMs).
@@ -145,3 +140,4 @@ Response:
 
 - Use environment variables for API security  
 This demonstrates production-level system thinking.
+
