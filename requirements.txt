@@ -4,7 +4,7 @@ uvicorn
 pydantic
 
 langchain-huggingface
-
+python-multipart
 # LLM & AI
 langchain
 langchain-community
