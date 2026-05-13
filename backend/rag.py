@@ -5,15 +5,17 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_classic.schema import Document
+from langchain_huggingface import HuggingFaceEndpointEmbeddings
 
 VECTORDB_PATH = "vectordb"
 
 # Shared embedding model — loaded once
-embed_model = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
+# ADD THIS (runs on HuggingFace servers, ~0 RAM locally):
+
+embed_model = HuggingFaceEndpointEmbeddings(
+    model="sentence-transformers/all-MiniLM-L6-v2",
+    huggingfacehub_api_token=os.getenv("HF_TOKEN")
 )
-
-
 def _get_splitter():
     return RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=40)
 
