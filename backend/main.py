@@ -1,11 +1,11 @@
 import os
 import shutil
 import tempfile
-
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Optional
+import uvicorn
 
 from llm import get_llm_response, get_vision_response, get_followup_response
 from rag import add_pdf_to_vectordb, add_textfile_to_vectordb, add_text_to_vectordb
@@ -130,3 +130,6 @@ async def train_status():
     """Check if a vectorDB exists (i.e. model has been trained)."""
     exists = os.path.exists("vectordb")
     return {"vectordb_exists": exists}
+
+if __name__=="__main__":
+    uvicorn.run(app,host="localhost",port=8000)
