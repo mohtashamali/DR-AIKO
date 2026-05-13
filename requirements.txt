@@ -1,6 +1,21 @@
-langchain 
-langchain_community
-langchain_groq
-langchain_classic
-streamlit
-py
+# Core Framework & API
+fastapi==0.115.0
+uvicorn==0.31.0
+pydantic==2.10.0
+
+# LLM & AI
+langchain==0.3.9
+langchain-community==0.3.9
+langchain-huggingface==0.0.39
+langchain-text-splitters==0.3.2
+groq==0.12.0
+
+# Vector Database
+faiss-cpu==1.10.1
+
+# Utilities
+python-dotenv==1.0.1
+
+# Optional - for development
+pytest==8.3.5
+black==24.10.0
