@@ -3,7 +3,7 @@ fastapi
 uvicorn
 pydantic
 
-sentence-transformers
+langchain-huggingface
 
 # LLM & AI
 langchain
