@@ -3,6 +3,8 @@ fastapi
 uvicorn
 pydantic
 
+sentence-transformers
+
 # LLM & AI
 langchain
 langchain-community
