@@ -3,6 +3,8 @@ import shutil
 import tempfile
 from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from typing import Optional
 import uvicorn
@@ -77,7 +79,6 @@ async def chat_followup(data: FollowupRequest):
 async def train_file(file: UploadFile = File(...)):
     """
     Upload a PDF or .txt file to add to the knowledge base.
-    The content is chunked, embedded, and merged into the FAISS vectorDB.
     Supports: .pdf, .txt, .md
     """
     filename  = file.filename or "upload"
@@ -87,7 +88,6 @@ async def train_file(file: UploadFile = File(...)):
     if extension not in allowed:
         return {"success": False, "error": f"Unsupported file type '{extension}'. Use PDF, TXT, or MD."}
 
-    # Save to a temp file so loaders can read it
     with tempfile.NamedTemporaryFile(delete=False, suffix=extension) as tmp:
         shutil.copyfileobj(file.file, tmp)
         tmp_path = tmp.name
@@ -98,7 +98,7 @@ async def train_file(file: UploadFile = File(...)):
         else:
             chunks_added = add_textfile_to_vectordb(tmp_path)
     finally:
-        os.unlink(tmp_path)   # always clean up
+        os.unlink(tmp_path)
 
     return {
         "success":      True,
@@ -110,10 +110,7 @@ async def train_file(file: UploadFile = File(...)):
 
 @app.post("/train/text")
 async def train_text(data: TextTrainRequest):
-    """
-    Send raw text directly to add to the knowledge base.
-    Useful for pasting notes, guidelines, or custom medical info.
-    """
+    """Send raw text directly to add to the knowledge base."""
     if not data.text.strip():
         return {"success": False, "error": "Text cannot be empty."}
 
@@ -130,6 +127,27 @@ async def train_status():
     """Check if a vectorDB exists (i.e. model has been trained)."""
     exists = os.path.exists("vectordb")
     return {"vectordb_exists": exists}
+
+
+# ══════════════════════════════════════
+#  SERVE FRONTEND (must be LAST)
+# ══════════════════════════════════════
+
+FRONTEND_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "Frontend"))
+
+app.mount("/static", StaticFiles(directory=FRONTEND_DIR), name="static")
+
+@app.get("/")
+async def serve_index():
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
+@app.get("/{full_path:path}")
+async def catch_all(full_path: str):
+    file_path = os.path.join(FRONTEND_DIR, full_path)
+    if os.path.isfile(file_path):
+        return FileResponse(file_path)
+    return FileResponse(os.path.join(FRONTEND_DIR, "index.html"))
+
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
