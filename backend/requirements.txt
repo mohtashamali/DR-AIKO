@@ -1,0 +1,22 @@
+# Core Framework & API
+fastapi
+uvicorn
+pydantic
+
+langchain-huggingface
+python-multipart
+# LLM & AI
+langchain
+langchain-community
+langchain-huggingface
+langchain-text-splitters
+groq
+# Vector Database
+faiss-cpu
+
+# Utilities
+python-dotenv
+
+# Optional - for development
+pytest
+black
