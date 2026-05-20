@@ -2,7 +2,7 @@ services:
   - type: web
     name: dr-aiko
     runtime: python
-    buildCommand: pip install -r requirements.txt
+    buildCommand: uv add -r requirements.txt
     startCommand: cd backend && python main.py
     envVars:
       - key: GROQ_API_KEY
