@@ -1,4 +1,4 @@
-# Dr Aiko — Retrieval-Augmented Medical Assistant
+# Dr Ai— Retrieval-Augmented Medical Assistant
 
 Dr Aiko is an AI-powered medical assistant built using Retrieval-Augmented Generation (RAG) and Large Language Models (LLMs).
 
