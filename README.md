@@ -8,7 +8,7 @@ The system provides structured, safety-aware medical responses by combining vect
 
 ## Overview
 
-Dr Aiko follows a Retrieval-Augmented Generation (RAG) architecture:
+Dr AI follows a Retrieval-Augmented Generation (RAG) architecture:
 
 1. User submits a medical query.
 2. Relevant medical documents are retrieved using FAISS vector search.
